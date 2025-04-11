@@ -26,9 +26,9 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        pyver: ["3.10", "3.11", "3.12", "3.13"]
-        cuda: ["12.4.1"]
-        torchver: ["2.4.0", "2.5.1", "2.6.0"]
+        pyver: ["3.11", "3.12", "3.13"]
+        cuda: ["12.8.1"]
+        torchver: ["2.7.0.dev20250311"]
     defaults:
       run:
         shell: pwsh
@@ -46,7 +46,7 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Install CUDA ${{ matrix.cuda }}
-        uses: Jimver/cuda-toolkit@v0.2.19
+        uses: Jimver/cuda-toolkit@v0.2.22
         id: cuda-toolkit
         with:
           cuda: "${{ matrix.cuda }}"
@@ -64,7 +64,7 @@ jobs:
           $cudaVersion = '${{ matrix.cuda }}'
           $cudaVersionPytorch = '${{ matrix.cuda }}'.Remove('${{ matrix.cuda }}'.LastIndexOf('.')).Replace('.','')
           
-          uv pip install --upgrade build setuptools wheel packaging ninja torch==${{ matrix.torchver }} psutil --extra-index-url "https://download.pytorch.org/whl/cu124"
+          uv pip install --upgrade build setuptools wheel packaging ninja torch==${{ matrix.torchver }} psutil --extra-index-url "https://download.pytorch.org/whl/nightly/cu128"
 
       - name: Build Wheel
         id: build-wheel
