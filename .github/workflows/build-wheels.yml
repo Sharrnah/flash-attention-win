@@ -27,7 +27,7 @@ jobs:
       fail-fast: false
       matrix:
         pyver: ["3.11", "3.12", "3.13"]
-        cuda: ["12.8.1", "12.9.1"]
+        cuda: ["12.8.1", "12.9.0"]
         torchver: ["2.8.0.dev20250627", "2.7.0.dev20250311", "2.7.0"]
     defaults:
       run:
@@ -46,13 +46,14 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Install CUDA ${{ matrix.cuda }}
-        uses: Jimver/cuda-toolkit@v0.2.26
+        #uses: Jimver/cuda-toolkit@v0.2.26
+        uses: Jimver/cuda-toolkit@v0.2.24
         id: cuda-toolkit
         with:
           cuda: "${{ matrix.cuda }}"
           method: "network"
           sub-packages: '["nvcc", "cudart", "cublas", "cufft", "curand", "cusolver", "cusparse", "visual_studio_integration"]'
-          use-github-cache: false
+          #use-github-cache: false
 
       - name: Install the latest version of uv and set the python version
         uses: astral-sh/setup-uv@v5
