@@ -21,8 +21,7 @@ permissions:
 
 jobs:
   build_wheels:
-    name: Build wheels for OS ${{ matrix.os }}, Python ${{ matrix.pyver }}, CUDA ${{ matrix.cuda }}, and Torch ${{ matrix.torchver }}
-    runs-on: ${{ matrix.os }}
+    name: Build wheels, Python ${{ matrix.pyver }}, CUDA ${{ matrix.cuda }}, and Torch ${{ matrix.torchver }}
     strategy:
       fail-fast: false
       matrix:
@@ -41,12 +40,6 @@ jobs:
             cuda: '12.8.1'
           - torchver: '2.6.0'
             cuda: '12.8.1'
-          - os: 'ubuntu-22.04'
-            torchver: '2.5.1'
-          - os: 'ubuntu-22.04'
-            torchver: '2.6.0'
-          - os: 'ubuntu-22.04'
-            cuda: '12.4.1'
     defaults:
       run:
         shell: pwsh
@@ -73,15 +66,15 @@ jobs:
         if: runner.os == 'Windows'
 
       # From FA2 repo
-      - name: Install Linux CUDA ${{ matrix.cuda }}
-        uses: Jimver/cuda-toolkit@v0.2.23
-        id: cuda-toolkit-Linux
-        with:
-          cuda: "${{ matrix.cuda }}"
-          linux-local-args: '["--toolkit"]'
-          method: "network"
-          sub-packages: '["nvcc"]'
-        if: runner.os != 'Windows'
+      #- name: Install Linux CUDA ${{ matrix.cuda }}
+      #  uses: Jimver/cuda-toolkit@v0.2.23
+      #  id: cuda-toolkit-Linux
+      #  with:
+      #    cuda: "${{ matrix.cuda }}"
+      #    linux-local-args: '["--toolkit"]'
+      #    method: "network"
+      #    sub-packages: '["nvcc"]'
+      #  if: runner.os != 'Windows'
 
       - name: Install the latest version of uv and set the python version
         uses: astral-sh/setup-uv@v5
