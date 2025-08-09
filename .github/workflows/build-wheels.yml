@@ -27,8 +27,8 @@ jobs:
       fail-fast: false
       matrix:
         pyver: ["3.11", "3.12", "3.13"]
-        cuda: ["12.8.1"]
-        torchver: ["2.7.0.dev20250311"]
+        cuda: ["12.9.1", "13.0.0"]
+        torchver: ["2.8.0.dev20250627"]
     defaults:
       run:
         shell: pwsh
