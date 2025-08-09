@@ -27,7 +27,8 @@ jobs:
       fail-fast: false
       matrix:
         pyver: ["3.11", "3.12", "3.13"]
-        cuda: ["12.9.1", "13.0.0"]
+        cuda: ["12.9.1"]
+        #cuda: ["12.9.1", "13.0.0"]
         torchver: ["2.8.0.dev20250627"]
     defaults:
       run:
@@ -46,7 +47,7 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Install CUDA ${{ matrix.cuda }}
-        uses: Jimver/cuda-toolkit@v0.2.22
+        uses: Jimver/cuda-toolkit@v0.2.26
         id: cuda-toolkit
         with:
           cuda: "${{ matrix.cuda }}"
