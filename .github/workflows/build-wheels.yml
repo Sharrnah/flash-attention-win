@@ -46,7 +46,7 @@ jobs:
         if: runner.os == 'Windows'
 
       - name: Install CUDA ${{ matrix.cuda }}
-        uses: Jimver/cuda-toolkit@v0.2.22
+        uses: Jimver/cuda-toolkit@v0.2.26
         id: cuda-toolkit
         with:
           cuda: "${{ matrix.cuda }}"
