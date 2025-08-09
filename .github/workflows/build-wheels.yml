@@ -52,6 +52,7 @@ jobs:
           cuda: "${{ matrix.cuda }}"
           method: "network"
           sub-packages: '["nvcc", "cudart", "cublas", "cufft", "curand", "cusolver", "cusparse", "visual_studio_integration"]'
+          use-github-cache: false
 
       - name: Install the latest version of uv and set the python version
         uses: astral-sh/setup-uv@v5
