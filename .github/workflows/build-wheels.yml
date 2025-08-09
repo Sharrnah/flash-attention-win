@@ -45,7 +45,6 @@ jobs:
       run:
         shell: pwsh
     env:
-        CUDAVER: ${{ matrix.cuda }}
         PCKGVER: ${{ inputs.version }}
 
     steps:
@@ -61,8 +60,8 @@ jobs:
         uses: Jimver/cuda-toolkit@v0.2.23
         id: cuda-toolkit-win
         with:
-          cuda: "${{ matrix.cuda }}"
-          method: "network"
+          cuda: ${{ matrix.cuda }}
+          method: network
           sub-packages: '["nvcc", "cudart", "cublas", "cufft", "curand", "cusolver", "cusparse", "visual_studio_integration"]'
         if: runner.os == 'Windows'
 
