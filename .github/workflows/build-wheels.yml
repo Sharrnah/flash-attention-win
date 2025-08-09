@@ -21,30 +21,19 @@ permissions:
 
 jobs:
   build_wheels:
-    name: Build wheels, Python ${{ matrix.pyver }}, CUDA ${{ matrix.cuda }}, and Torch ${{ matrix.torchver }}
+    name: Build wheels for Python ${{ matrix.pyver }}, CUDA ${{ matrix.cuda }}, and Torch ${{ matrix.torchver }}
     runs-on: windows-2022
     strategy:
       fail-fast: false
       matrix:
-        #os: ["windows-2022", "ubuntu-22.04"]
-        os: ["windows-2022"]
         pyver: ["3.11", "3.12", "3.13"]
         cuda: ["12.8.1", "12.9.1"]
-        torchver: ["2.8.0.dev20250627", "2.7.0"]
-        exclude:
-          - os: "windows-2022"
-          - torchver: '2.5.1'
-            pyver: '3.13'
-          - torchver: '2.7.0'
-            cuda: '12.4.1'
-          - torchver: '2.5.1'
-            cuda: '12.8.1'
-          - torchver: '2.6.0'
-            cuda: '12.8.1'
+        torchver: ["2.8.0.dev20250627", "2.7.0.dev20250311", "2.7.0"]
     defaults:
       run:
         shell: pwsh
     env:
+        CUDAVER: ${{ matrix.cuda }}
         PCKGVER: ${{ inputs.version }}
 
     steps:
@@ -56,25 +45,13 @@ jobs:
         run: choco install -y visualstudio2022buildtools --version=117.9.7.0 --params "--add Microsoft.VisualStudio.Component.VC.Tools.x86.x64 --installChannelUri https://aka.ms/vs/17/release/180911598_-255012421/channel"
         if: runner.os == 'Windows'
 
-      - name: Install Windows CUDA ${{ matrix.cuda }}
-        uses: Jimver/cuda-toolkit@v0.2.23
-        id: cuda-toolkit-win
+      - name: Install CUDA ${{ matrix.cuda }}
+        uses: Jimver/cuda-toolkit@v0.2.22
+        id: cuda-toolkit
         with:
-          cuda: ${{ matrix.cuda }}
-          method: network
+          cuda: "${{ matrix.cuda }}"
+          method: "network"
           sub-packages: '["nvcc", "cudart", "cublas", "cufft", "curand", "cusolver", "cusparse", "visual_studio_integration"]'
-        if: runner.os == 'Windows'
-
-      # From FA2 repo
-      #- name: Install Linux CUDA ${{ matrix.cuda }}
-      #  uses: Jimver/cuda-toolkit@v0.2.23
-      #  id: cuda-toolkit-Linux
-      #  with:
-      #    cuda: "${{ matrix.cuda }}"
-      #    linux-local-args: '["--toolkit"]'
-      #    method: "network"
-      #    sub-packages: '["nvcc"]'
-      #  if: runner.os != 'Windows'
 
       - name: Install the latest version of uv and set the python version
         uses: astral-sh/setup-uv@v5
